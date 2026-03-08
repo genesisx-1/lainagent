@@ -1,0 +1,22 @@
+{
+  "tasks": [],
+  "config": {
+    "auto_dispatch": true,
+    "chain_of_command": ["Claude", "Codex", "Qwen", "Gemini", "Cursor"],
+    "dispatch_rules": {
+      "research": "Gemini",
+      "edit": "Cursor",
+      "refactor": "Cursor",
+      "generate": "Codex",
+      "review": "Codex",
+      "plan": "Claude",
+      "scrape": "Qwen",
+      "data": "Qwen",
+      "analyze": "Qwen",
+      "script": "Qwen",
+      "python": "Qwen",
+      "database": "Qwen",
+      "default": "Codex"
+    }
+  }
+}

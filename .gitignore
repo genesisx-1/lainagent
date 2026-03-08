@@ -1,0 +1,12 @@
+node_modules/
+.DS_Store
+
+# Local runtime and generated data
+*.db
+*.db-shm
+*.db-wal
+*.log
+
+# Environment files
+.env
+.env.*

@@ -1,0 +1,45 @@
+{
+  "Claude": {
+    "enabled": false,
+    "tasks": [],
+    "schedule": [],
+    "mode": "task",
+    "context": ""
+  },
+  "Gemini": {
+    "enabled": false,
+    "tasks": [
+      {
+        "id": "mmgypw8kmmc",
+        "text": "look over astrid folder and do rsrearch into how i can get users on my platform",
+        "status": "done",
+        "result": "YOLO mode is enabled. All tool calls will be automatically approved.\nLoaded cached credentials.\nYOLO mode is enabled. All tool calls will be automatically approved.\nI will start by exploring the contents of the `astrid` folder to understand the platform's purpose and current state.\nI'll read the `README.md` and `STATUS_REPORT.md` files to understand what Astrid is and its current development status.\nI'll examine the landing page and the onboarding process to understand the target audience and how the platform is presented to new users.\nI'll look into `LandingPageClient` to understand the messaging and then check the onboarding flow.\nI'll look into the onboarding flow to see how new users are introduced to the platform's features.\nI'll check the `OnboardingForm` to see what info is collected and how users are segmented.\nI'll look into `astrid_scale_operations_plan.md` for any existing growth or marketing plans, as the platform's focus is on professional music collaboration.\nI'll look into `ai_outreach_guide.md` to see if it offers any clues about the owner's interest in AI-driven outreach, as the `astrid_scale_operations_plan.md` seems more like a generic agency plan.\nI'll blend the \"Modern Musician\" value proposition with the \"AI Outreach\" methodology to attract users to Astrid. I'll start by analyzing the project and portfolio features to identify unique selling points, then research where target niches like SoundCloud and Discord users congregate, and finally, I'll create an outreach plan using the user's preferred tools.\nError executing tool list_directory: Error: Failed to list directory.\nI'll double-check `src/app/(main)` to confirm if projects are implemented, as the `STATUS_REPORT.md` indicated.\nI'll check `portfolio`, `music`, and the `astrid` directory in `(main)` to see if \"projects\" is there, as I might have misread the report.\nI'll grep for \"projects\" in `src/app` to find the directory, since the report says they're implemented but I haven't found them yet. I'll also check the `projects` table in `database/schema.sql` for their definition.\nI'll check `astrid/src/app/(main)/astrid` to see if the projects directory is in a different location than expected, since the `STATUS_REPORT.md` might be misleading.\nI'll list `astrid/src/app` again to see if I missed the `projects` directory somewhere outside of `(main)`.\nI'll grep `projects` in all files to find out where it's being used.\nI'll check the database schema for a `projects` table, as they seem to be part of `profile` and `explore` instead of a standalone route.\nError executing tool read_file: File not found.\nI'll look in `astrid/database` for the right schema file.\nI'll check `astrid/database/migrations` for the structure.\nI'll check `astrid/src/app/(main)/portfolio/page.tsx` and its `[id]` equivalent to see if \"projects\" are part of the \"Portfolio System,\" as no dedicated `projects` table was found in the migrations.\nAstrid's growth strategy should highlight its ability to help music",
+        "created": "2026-03-07T23:36:35.444Z"
+      }
+    ],
+    "schedule": [],
+    "mode": "task",
+    "context": ""
+  },
+  "Codex": {
+    "enabled": false,
+    "tasks": [],
+    "schedule": [],
+    "mode": "task",
+    "context": ""
+  },
+  "Cursor": {
+    "enabled": false,
+    "tasks": [],
+    "schedule": [],
+    "mode": "task",
+    "context": ""
+  },
+  "Qwen": {
+    "enabled": false,
+    "tasks": [],
+    "schedule": [],
+    "mode": "task",
+    "context": ""
+  }
+}
