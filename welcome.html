@@ -1,0 +1,1026 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Kami Claw</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+    @keyframes fadeInSlow { from { opacity: 0; } to { opacity: 1; } }
+    @keyframes pulse { 0%, 100% { opacity: 0.6; } 50% { opacity: 1; } }
+    @keyframes slideUp { from { opacity: 0; transform: translateY(40px); } to { opacity: 1; transform: translateY(0); } }
+    @keyframes glowPulse { 0%, 100% { box-shadow: 0 0 20px rgba(139, 92, 246, 0.15); } 50% { box-shadow: 0 0 40px rgba(139, 92, 246, 0.3); } }
+    @keyframes scanline { 0% { top: -100%; } 100% { top: 100%; } }
+    @keyframes typewriter { from { width: 0; } to { width: 100%; } }
+    @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
+    @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-6px); } }
+    @keyframes dotPulse { 0%, 100% { opacity: 0.3; } 50% { opacity: 1; } }
+
+    body {
+      background: #08080f;
+      font-family: 'Courier New', monospace;
+      color: #c8c8d4;
+      overflow-x: hidden;
+      overflow-y: auto;
+      min-height: 100vh;
+    }
+
+    body::-webkit-scrollbar { width: 6px; }
+    body::-webkit-scrollbar-track { background: #08080f; }
+    body::-webkit-scrollbar-thumb { background: #2a2a4a; border-radius: 3px; }
+
+    /* === HERO === */
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background:
+        radial-gradient(ellipse at 20% 50%, rgba(139, 92, 246, 0.08) 0%, transparent 60%),
+        radial-gradient(ellipse at 80% 50%, rgba(236, 72, 153, 0.06) 0%, transparent 60%),
+        radial-gradient(ellipse at 50% 0%, rgba(59, 130, 246, 0.05) 0%, transparent 50%);
+      pointer-events: none;
+    }
+
+    .hero-grid {
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background-image:
+        linear-gradient(rgba(139, 92, 246, 0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(139, 92, 246, 0.03) 1px, transparent 1px);
+      background-size: 40px 40px;
+      pointer-events: none;
+    }
+
+    .scanline {
+      position: absolute;
+      left: 0; right: 0;
+      height: 200px;
+      background: linear-gradient(transparent, rgba(139, 92, 246, 0.03), transparent);
+      animation: scanline 8s linear infinite;
+      pointer-events: none;
+    }
+
+    .logo-container {
+      animation: fadeIn 1s ease;
+      text-align: center;
+      z-index: 1;
+    }
+
+    .logo-icon {
+      font-size: 64px;
+      margin-bottom: 16px;
+      animation: float 4s ease-in-out infinite;
+      filter: drop-shadow(0 0 20px rgba(139, 92, 246, 0.4));
+    }
+
+    .logo {
+      font-size: 56px;
+      font-weight: bold;
+      letter-spacing: 6px;
+      background: linear-gradient(135deg, #8b5cf6 0%, #ec4899 50%, #3b82f6 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+
+    .logo-sub {
+      font-size: 13px;
+      color: #555;
+      letter-spacing: 8px;
+      text-transform: uppercase;
+      margin-bottom: 40px;
+    }
+
+    .hero-tagline {
+      font-size: 18px;
+      color: #8b8b9e;
+      max-width: 600px;
+      text-align: center;
+      line-height: 1.7;
+      animation: fadeIn 1.2s ease;
+      margin-bottom: 48px;
+      z-index: 1;
+    }
+
+    .hero-tagline em {
+      color: #a78bfa;
+      font-style: normal;
+    }
+
+    .cta-row {
+      display: flex;
+      gap: 16px;
+      animation: fadeIn 1.5s ease;
+      z-index: 1;
+    }
+
+    .cta-btn {
+      padding: 14px 36px;
+      border-radius: 8px;
+      font-family: inherit;
+      font-size: 14px;
+      cursor: pointer;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      transition: all 0.3s ease;
+    }
+
+    .cta-primary {
+      background: linear-gradient(135deg, #8b5cf6, #7c3aed);
+      border: none;
+      color: #fff;
+      box-shadow: 0 4px 20px rgba(139, 92, 246, 0.3);
+    }
+
+    .cta-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 30px rgba(139, 92, 246, 0.5);
+    }
+
+    .cta-secondary {
+      background: transparent;
+      border: 1px solid #333;
+      color: #888;
+    }
+
+    .cta-secondary:hover {
+      border-color: #8b5cf6;
+      color: #a78bfa;
+    }
+
+    .scroll-hint {
+      position: absolute;
+      bottom: 30px;
+      color: #333;
+      font-size: 11px;
+      letter-spacing: 3px;
+      animation: pulse 2s ease infinite;
+      z-index: 1;
+    }
+
+    /* === SECTIONS === */
+    .section {
+      padding: 100px 60px;
+      max-width: 1100px;
+      margin: 0 auto;
+      animation: slideUp 0.8s ease;
+    }
+
+    .section-header {
+      text-align: center;
+      margin-bottom: 60px;
+    }
+
+    .section-label {
+      font-size: 11px;
+      letter-spacing: 5px;
+      text-transform: uppercase;
+      color: #8b5cf6;
+      margin-bottom: 12px;
+    }
+
+    .section-title {
+      font-size: 32px;
+      color: #e4e4ed;
+      font-weight: bold;
+      margin-bottom: 12px;
+    }
+
+    .section-desc {
+      font-size: 14px;
+      color: #666;
+      max-width: 600px;
+      margin: 0 auto;
+      line-height: 1.7;
+    }
+
+    /* === WHAT IS IT === */
+    .what-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+      margin-top: 40px;
+    }
+
+    .what-card {
+      background: #0d0d18;
+      border: 1px solid #1a1a2e;
+      border-radius: 12px;
+      padding: 32px;
+      transition: all 0.3s ease;
+    }
+
+    .what-card:hover {
+      border-color: #8b5cf644;
+      transform: translateY(-2px);
+      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
+    }
+
+    .what-card-icon {
+      font-size: 28px;
+      margin-bottom: 16px;
+    }
+
+    .what-card h3 {
+      color: #d4d4e0;
+      font-size: 16px;
+      margin-bottom: 10px;
+    }
+
+    .what-card p {
+      color: #666;
+      font-size: 12px;
+      line-height: 1.7;
+    }
+
+    /* === AI MODELS === */
+    .models-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+      margin-top: 40px;
+    }
+
+    .model-card {
+      background: #0d0d18;
+      border: 1px solid #1a1a2e;
+      border-radius: 12px;
+      padding: 24px;
+      text-align: center;
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .model-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 2px;
+      background: var(--accent);
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+
+    .model-card:hover::before { opacity: 1; }
+
+    .model-card:hover {
+      border-color: var(--accent);
+      transform: translateY(-3px);
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
+    }
+
+    .model-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: var(--accent);
+      margin: 0 auto 14px;
+      box-shadow: 0 0 10px var(--accent);
+    }
+
+    .model-name {
+      font-size: 16px;
+      color: #e4e4ed;
+      font-weight: bold;
+      margin-bottom: 4px;
+    }
+
+    .model-provider {
+      font-size: 10px;
+      color: #555;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      margin-bottom: 12px;
+    }
+
+    .model-desc {
+      font-size: 11px;
+      color: #666;
+      line-height: 1.6;
+      margin-bottom: 12px;
+    }
+
+    .model-tag {
+      display: inline-block;
+      padding: 3px 10px;
+      border-radius: 20px;
+      font-size: 9px;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      border: 1px solid;
+    }
+
+    .tag-cloud { color: #8b5cf6; border-color: #8b5cf633; background: #8b5cf60a; }
+    .tag-local { color: #10b981; border-color: #10b98133; background: #10b9810a; }
+    .tag-free { color: #3b82f6; border-color: #3b82f633; background: #3b82f60a; }
+
+    /* === FEATURES === */
+    .features-list {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0;
+      margin-top: 40px;
+      border: 1px solid #1a1a2e;
+      border-radius: 12px;
+      overflow: hidden;
+    }
+
+    .feature-item {
+      padding: 28px 32px;
+      border-bottom: 1px solid #1a1a2e;
+      border-right: 1px solid #1a1a2e;
+      transition: background 0.2s;
+    }
+
+    .feature-item:hover { background: #0d0d18; }
+    .feature-item:nth-child(even) { border-right: none; }
+    .feature-item:nth-last-child(-n+2) { border-bottom: none; }
+
+    .feature-icon {
+      font-size: 20px;
+      margin-bottom: 10px;
+    }
+
+    .feature-item h4 {
+      color: #d4d4e0;
+      font-size: 13px;
+      margin-bottom: 6px;
+    }
+
+    .feature-item p {
+      color: #555;
+      font-size: 11px;
+      line-height: 1.6;
+    }
+
+    /* === ARCHITECTURE === */
+    .arch-container {
+      margin-top: 40px;
+      background: #0d0d18;
+      border: 1px solid #1a1a2e;
+      border-radius: 12px;
+      padding: 40px;
+      font-size: 12px;
+      line-height: 2;
+      animation: glowPulse 4s ease infinite;
+    }
+
+    .arch-row {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      margin: 12px 0;
+    }
+
+    .arch-box {
+      padding: 10px 20px;
+      border-radius: 8px;
+      border: 1px solid;
+      text-align: center;
+      font-size: 11px;
+      letter-spacing: 1px;
+    }
+
+    .arch-you { border-color: #ec489966; color: #ec4899; background: #ec48990a; }
+    .arch-head { border-color: #8b5cf666; color: #8b5cf6; background: #8b5cf60a; font-size: 13px; padding: 14px 28px; }
+    .arch-agent { border-color: #3b82f644; color: #3b82f6; background: #3b82f60a; }
+    .arch-tool { border-color: #10b98133; color: #10b981; background: #10b9810a; font-size: 10px; }
+    .arch-arrow { color: #333; font-size: 16px; }
+    .arch-label { color: #444; font-size: 10px; letter-spacing: 3px; text-transform: uppercase; text-align: center; margin: 8px 0; }
+
+    /* === FOOTER === */
+    .footer {
+      text-align: center;
+      padding: 60px 20px 40px;
+      border-top: 1px solid #111;
+    }
+
+    .footer-logo {
+      font-size: 20px;
+      letter-spacing: 4px;
+      background: linear-gradient(135deg, #8b5cf6, #ec4899);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 8px;
+    }
+
+    .footer-text {
+      color: #333;
+      font-size: 10px;
+      letter-spacing: 2px;
+    }
+
+    .footer-links {
+      margin-top: 16px;
+      display: flex;
+      gap: 24px;
+      justify-content: center;
+    }
+
+    .footer-links a {
+      color: #444;
+      font-size: 11px;
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+
+    .footer-links a:hover { color: #8b5cf6; }
+
+    /* === VERSION BADGE === */
+    .version-badge {
+      position: fixed;
+      top: 16px;
+      right: 20px;
+      font-size: 10px;
+      color: #333;
+      letter-spacing: 2px;
+      z-index: 10;
+    }
+
+    /* === NAV === */
+    .nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      padding: 16px 40px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      z-index: 100;
+      background: rgba(8, 8, 15, 0.8);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid #111;
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+
+    .nav.visible { opacity: 1; }
+
+    .nav-logo {
+      font-size: 14px;
+      letter-spacing: 3px;
+      background: linear-gradient(135deg, #8b5cf6, #ec4899);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      font-weight: bold;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 24px;
+    }
+
+    .nav-links a {
+      color: #555;
+      text-decoration: none;
+      font-size: 11px;
+      letter-spacing: 2px;
+      transition: color 0.2s;
+    }
+
+    .nav-links a:hover { color: #a78bfa; }
+
+    .nav-enter {
+      padding: 6px 18px;
+      background: #8b5cf6;
+      border: none;
+      border-radius: 6px;
+      color: #fff;
+      font-family: inherit;
+      font-size: 11px;
+      cursor: pointer;
+      letter-spacing: 2px;
+      transition: all 0.2s;
+    }
+
+    .nav-enter:hover { background: #7c3aed; }
+
+    /* === STATUS ROW === */
+    .status-row {
+      display: flex;
+      justify-content: center;
+      gap: 40px;
+      margin-top: 40px;
+      padding: 24px;
+      animation: fadeIn 2s ease;
+      z-index: 1;
+    }
+
+    .status-item {
+      text-align: center;
+    }
+
+    .status-num {
+      font-size: 28px;
+      color: #8b5cf6;
+      font-weight: bold;
+    }
+
+    .status-label {
+      font-size: 10px;
+      color: #444;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      margin-top: 4px;
+    }
+
+    /* Particles canvas */
+    #particles {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100vw;
+      height: 100vh;
+      pointer-events: none;
+      z-index: 0;
+    }
+  </style>
+</head>
+<body>
+
+  <canvas id="particles"></canvas>
+
+  <!-- Nav (appears on scroll) -->
+  <nav class="nav" id="nav">
+    <div class="nav-logo">KAMI CLAW</div>
+    <div class="nav-links">
+      <a href="#what">About</a>
+      <a href="#models">Models</a>
+      <a href="#features">Features</a>
+      <a href="#arch">Architecture</a>
+    </div>
+    <button class="nav-enter" onclick="enterApp()">Launch</button>
+  </nav>
+
+  <div class="version-badge">v2.0</div>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-grid"></div>
+    <div class="scanline"></div>
+
+    <div class="logo-container">
+      <div class="logo-icon">&#x29C9;</div>
+      <div class="logo">Kami Claw</div>
+      <div class="logo-sub">AI Workforce Platform</div>
+    </div>
+
+    <p class="hero-tagline">
+      Build, deploy, and manage <em>autonomous AI agent teams</em> that think,
+      communicate, and run businesses — powered by any LLM,
+      controlled from your terminal.
+    </p>
+
+    <div class="cta-row">
+      <button class="cta-btn cta-primary" onclick="enterApp()">Enter Office</button>
+      <button class="cta-btn cta-secondary" onclick="document.getElementById('what').scrollIntoView({behavior:'smooth'})">Learn More</button>
+    </div>
+
+    <div class="status-row">
+      <div class="status-item">
+        <div class="status-num">5+</div>
+        <div class="status-label">AI Models</div>
+      </div>
+      <div class="status-item">
+        <div class="status-num">0</div>
+        <div class="status-label">API Keys Required</div>
+      </div>
+      <div class="status-item">
+        <div class="status-num">24/7</div>
+        <div class="status-label">Daemon Mode</div>
+      </div>
+      <div class="status-item">
+        <div class="status-num">&infin;</div>
+        <div class="status-label">Agents</div>
+      </div>
+    </div>
+
+    <div class="scroll-hint">&#x2193; SCROLL TO EXPLORE &#x2193;</div>
+  </section>
+
+  <!-- WHAT IS KAMI CLAW -->
+  <section class="section" id="what">
+    <div class="section-header">
+      <div class="section-label">What is Kami Claw</div>
+      <div class="section-title">Your AI Workforce, Locally Run</div>
+      <p class="section-desc">
+        Kami Claw turns CLI-based AI models into a team of employees.
+        Each agent has its own terminal, memory, and personality.
+        No API keys on the frontend &mdash; everything runs through CLI commands.
+      </p>
+    </div>
+
+    <div class="what-grid">
+      <div class="what-card">
+        <div class="what-card-icon">&#x2318;</div>
+        <h3>CLI-First Architecture</h3>
+        <p>Every agent runs off terminal commands &mdash; claude, gemini, codex, qwen, ollama. The app spawns and monitors processes. No SDKs, no API keys baked into the UI. Your CLI tools are the backend.</p>
+      </div>
+      <div class="what-card">
+        <div class="what-card-icon">&#x267B;</div>
+        <h3>Survives Shutdown</h3>
+        <p>Agents write memory to disk as Markdown files. On restart, they pick up where they left off &mdash; conversations, tasks, context, everything. Shut your laptop, open it tomorrow, agents remember.</p>
+      </div>
+      <div class="what-card">
+        <div class="what-card-icon">&#x26A1;</div>
+        <h3>Cloud &#x2194; Local Swap</h3>
+        <p>When cloud tokens run low, agents auto-swap to local LLMs via Ollama. Same agent, same memory, different brain. Claude swaps to DeepSeek. Gemini swaps to Gemma. Zero downtime.</p>
+      </div>
+      <div class="what-card">
+        <div class="what-card-icon">&#x2692;</div>
+        <h3>Skills &amp; Workflows</h3>
+        <p>Reusable automations defined as simple Markdown files. Chain skills into multi-step pipelines &mdash; scrape leads, research them, write outreach, send emails. Build once, run forever.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- AI MODELS -->
+  <section class="section" id="models">
+    <div class="section-header">
+      <div class="section-label">Supported Models</div>
+      <div class="section-title">Any Brain, One Platform</div>
+      <p class="section-desc">
+        Kami Claw is model-agnostic. Use cloud APIs when you need power,
+        swap to local models when you need speed or want to save tokens.
+      </p>
+    </div>
+
+    <div class="models-grid">
+      <!-- Cloud Models -->
+      <div class="model-card" style="--accent: #e8956a">
+        <div class="model-dot"></div>
+        <div class="model-name">Claude</div>
+        <div class="model-provider">Anthropic</div>
+        <div class="model-desc">Opus 4.6, Sonnet 4.6, Haiku 4.5. Best for coding, architecture, complex reasoning. Default commander agent.</div>
+        <span class="model-tag tag-cloud">Cloud</span>
+      </div>
+
+      <div class="model-card" style="--accent: #4ade80">
+        <div class="model-dot"></div>
+        <div class="model-name">Codex</div>
+        <div class="model-provider">OpenAI</div>
+        <div class="model-desc">GPT-5.3 Codex. Code generation, code review, backend logic. Second-in-command when Claude is offline.</div>
+        <span class="model-tag tag-cloud">Cloud</span>
+      </div>
+
+      <div class="model-card" style="--accent: #f87171">
+        <div class="model-dot"></div>
+        <div class="model-name">Gemini</div>
+        <div class="model-provider">Google</div>
+        <div class="model-desc">Gemini 2.5 Pro/Flash. Research, analysis, documentation, knowledge lookups. Daemon-capable for 24/7 research.</div>
+        <span class="model-tag tag-cloud">Cloud</span>
+      </div>
+
+      <div class="model-card" style="--accent: #facc15">
+        <div class="model-dot"></div>
+        <div class="model-name">Cursor</div>
+        <div class="model-provider">Anysphere</div>
+        <div class="model-desc">Cursor Agent CLI. Targeted file edits, refactoring, frontend work with full codebase context.</div>
+        <span class="model-tag tag-cloud">Cloud</span>
+      </div>
+
+      <div class="model-card" style="--accent: #22d3ee">
+        <div class="model-dot"></div>
+        <div class="model-name">Qwen</div>
+        <div class="model-provider">Alibaba</div>
+        <div class="model-desc">Qwen 2.5. Python scripts, data processing, web scraping, CRM operations. Daemon-capable for automation.</div>
+        <span class="model-tag tag-cloud">Cloud</span>
+      </div>
+
+      <div class="model-card" style="--accent: #a78bfa">
+        <div class="model-dot"></div>
+        <div class="model-name">OpenRouter</div>
+        <div class="model-provider">OpenRouter</div>
+        <div class="model-desc">Access 200+ models through one API. Llama, Mistral, Mixtral, Command R, and more. Pay-per-token routing.</div>
+        <span class="model-tag tag-cloud">Cloud</span>
+      </div>
+
+      <!-- Local Models -->
+      <div class="model-card" style="--accent: #10b981">
+        <div class="model-dot"></div>
+        <div class="model-name">DeepSeek R1</div>
+        <div class="model-provider">Ollama</div>
+        <div class="model-desc">Reasoning-focused local model. Fallback for Claude when tokens run out. Strong at code and analysis.</div>
+        <span class="model-tag tag-local">Local</span>
+      </div>
+
+      <div class="model-card" style="--accent: #10b981">
+        <div class="model-dot"></div>
+        <div class="model-name">Llama 3.3</div>
+        <div class="model-provider">Ollama / Meta</div>
+        <div class="model-desc">Open-weight general purpose model. 70B parameter powerhouse. Great all-rounder for local inference.</div>
+        <span class="model-tag tag-local">Local</span>
+      </div>
+
+      <div class="model-card" style="--accent: #10b981">
+        <div class="model-dot"></div>
+        <div class="model-name">Gemma 2</div>
+        <div class="model-provider">Ollama / Google</div>
+        <div class="model-desc">Lightweight local model from Google. Fallback for Gemini. Fast inference, good for research tasks.</div>
+        <span class="model-tag tag-local">Local</span>
+      </div>
+
+      <div class="model-card" style="--accent: #10b981">
+        <div class="model-dot"></div>
+        <div class="model-name">CodeLlama</div>
+        <div class="model-provider">Ollama / Meta</div>
+        <div class="model-desc">Specialized coding model. Fallback for Codex. Handles code generation and review locally.</div>
+        <span class="model-tag tag-local">Local</span>
+      </div>
+
+      <div class="model-card" style="--accent: #10b981">
+        <div class="model-dot"></div>
+        <div class="model-name">Qwen 2.5</div>
+        <div class="model-provider">Ollama / Alibaba</div>
+        <div class="model-desc">Local version of Qwen. Python, data, multilingual. Swap seamlessly from cloud Qwen CLI.</div>
+        <span class="model-tag tag-local">Local</span>
+      </div>
+
+      <div class="model-card" style="--accent: #3b82f6">
+        <div class="model-dot"></div>
+        <div class="model-name">Any Ollama Model</div>
+        <div class="model-provider">Ollama</div>
+        <div class="model-desc">Run any model Ollama supports. Mistral, Phi, Vicuna, StarCoder, and hundreds more. Your hardware, your choice.</div>
+        <span class="model-tag tag-free">Free Forever</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- FEATURES BREAKDOWN -->
+  <section class="section" id="features">
+    <div class="section-header">
+      <div class="section-label">Feature Breakdown</div>
+      <div class="section-title">Everything Agents Need to Work</div>
+    </div>
+
+    <div class="features-list">
+      <div class="feature-item">
+        <div class="feature-icon">&#x2756;</div>
+        <h4>Agent Creation via CLI</h4>
+        <p>Create agents with a single command. Assign roles, departments, CLI backends, fallback models, and permissions. Each agent gets its own config file, memory directory, and terminal.</p>
+      </div>
+      <div class="feature-item">
+        <div class="feature-icon">&#x25B6;</div>
+        <h4>Live Terminals Per Agent</h4>
+        <p>Every agent has an embedded terminal showing real-time CLI output. Watch them think, see what commands run, and monitor their reasoning live. Tab between agents like browser tabs.</p>
+      </div>
+      <div class="feature-item">
+        <div class="feature-icon">&#x21C4;</div>
+        <h4>Inter-Agent Communication</h4>
+        <p>Agents talk to each other through a shared message bus. Threaded conversations, priority levels, file attachments. Watch their conversations live or search history.</p>
+      </div>
+      <div class="feature-item">
+        <div class="feature-icon">&#x2699;</div>
+        <h4>Task Pipeline System</h4>
+        <p>Tasks flow through stages: inbox, queued, assigned, in progress, review, done. Auto-dispatch by keywords or agent workload. Dependencies, priorities, recurring tasks.</p>
+      </div>
+      <div class="feature-item">
+        <div class="feature-icon">&#x260D;</div>
+        <h4>Skills &amp; Workflows</h4>
+        <p>Define reusable skills as Markdown files with YAML frontmatter. Chain them into multi-step pipelines: scrape &rarr; research &rarr; score &rarr; outreach. Ships with 15+ built-in skills.</p>
+      </div>
+      <div class="feature-item">
+        <div class="feature-icon">&#x1F310;</div>
+        <h4>Browser Agent</h4>
+        <p>Built on Playwright. Agents navigate websites, fill forms, scrape data, take screenshots, monitor competitors, and deploy websites. All visible in the terminal tab.</p>
+      </div>
+      <div class="feature-item">
+        <div class="feature-icon">&#x2B22;</div>
+        <h4>CRM &amp; Lead Pipeline</h4>
+        <p>Full CRM with contacts, leads, deals, companies. Visual pipeline: prospect &rarr; contacted &rarr; meeting &rarr; proposal &rarr; won. Agents work leads automatically.</p>
+      </div>
+      <div class="feature-item">
+        <div class="feature-icon">&#x2B21;</div>
+        <h4>Multi-Business</h4>
+        <p>Run multiple businesses from one install. Each gets its own agent team, CRM, workflows, file storage, and knowledge base. Switch with a dropdown.</p>
+      </div>
+      <div class="feature-item">
+        <div class="feature-icon">&#x23F0;</div>
+        <h4>Heartbeat System</h4>
+        <p>Every 30 minutes, agents review their context, check for events, write learnings to memory, and only alert you when something needs attention. Proactive, not reactive.</p>
+      </div>
+      <div class="feature-item">
+        <div class="feature-icon">&#x2B06;</div>
+        <h4>File &amp; Document Manager</h4>
+        <p>Upload files from your Mac or Telegram. Agents process PDFs, CSVs, images. Shared knowledge base per business. Auto-processing rules on upload.</p>
+      </div>
+      <div class="feature-item">
+        <div class="feature-icon">&#x260E;</div>
+        <h4>Telegram &amp; Integrations</h4>
+        <p>Text your head agent from Telegram. Connect Notion, Gmail, Google Calendar, Slack, Discord, GitHub, Stripe. Simple YAML config per platform.</p>
+      </div>
+      <div class="feature-item">
+        <div class="feature-icon">&#x2601;</div>
+        <h4>Deploy Anywhere</h4>
+        <p>Run locally on your Mac, or deploy to a $5/mo VPS via Docker. Headless mode with REST API. Agents run 24/7, synced back to your desktop.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ARCHITECTURE -->
+  <section class="section" id="arch">
+    <div class="section-header">
+      <div class="section-label">Architecture</div>
+      <div class="section-title">How It All Connects</div>
+    </div>
+
+    <div class="arch-container">
+      <div class="arch-label">You</div>
+      <div class="arch-row">
+        <div class="arch-box arch-you">Mac App</div>
+        <div class="arch-box arch-you">Telegram</div>
+        <div class="arch-box arch-you">CLI</div>
+      </div>
+
+      <div class="arch-label">&#x2193;</div>
+
+      <div class="arch-row">
+        <div class="arch-box arch-head">&#x29C9; Kami Claw Engine</div>
+      </div>
+
+      <div class="arch-label">&#x2193; spawns &amp; monitors</div>
+
+      <div class="arch-row">
+        <div class="arch-box arch-agent">Claude</div>
+        <div class="arch-box arch-agent">Codex</div>
+        <div class="arch-box arch-agent">Gemini</div>
+        <div class="arch-box arch-agent">Qwen</div>
+        <div class="arch-box arch-agent">Custom</div>
+      </div>
+
+      <div class="arch-label">&#x2193; uses</div>
+
+      <div class="arch-row">
+        <div class="arch-box arch-tool">Browser</div>
+        <div class="arch-box arch-tool">CRM</div>
+        <div class="arch-box arch-tool">Files</div>
+        <div class="arch-box arch-tool">Skills</div>
+        <div class="arch-box arch-tool">Memory</div>
+      </div>
+
+      <div class="arch-label">&#x2193; connects to</div>
+
+      <div class="arch-row">
+        <div class="arch-box arch-tool">Notion</div>
+        <div class="arch-box arch-tool">Gmail</div>
+        <div class="arch-box arch-tool">GitHub</div>
+        <div class="arch-box arch-tool">Slack</div>
+        <div class="arch-box arch-tool">Stripe</div>
+      </div>
+
+      <div style="margin-top: 24px; text-align: center;">
+        <div class="arch-label" style="margin-bottom: 12px;">fallback</div>
+        <div class="arch-row">
+          <div class="arch-box" style="border-color: #10b98144; color: #10b981; background: #10b9810a;">
+            Ollama (Local LLMs) &mdash; runs when cloud tokens are depleted
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- DUAL UI -->
+  <section class="section">
+    <div class="section-header">
+      <div class="section-label">Two Modes</div>
+      <div class="section-title">Work Your Way</div>
+    </div>
+
+    <div class="what-grid">
+      <div class="what-card" style="border-color: #8b5cf633;">
+        <div class="what-card-icon">&#x1F3AE;</div>
+        <h3>Gamified Mode</h3>
+        <p>Pixel-art office where agents walk around, sit at desks, take coffee breaks. Customizable avatars, achievements, XP, office cat. Fun visualization of your AI workforce doing real work.</p>
+      </div>
+      <div class="what-card" style="border-color: #3b82f633;">
+        <div class="what-card-icon">&#x1F4CA;</div>
+        <h3>Professional Mode</h3>
+        <p>Clean CRM dashboard. Kanban boards, pipeline views, analytics charts, agent cards with live terminal output. Think Linear meets HubSpot. All business, no pixels.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- FINAL CTA -->
+  <section class="section" style="text-align: center; padding-bottom: 40px;">
+    <div class="section-title" style="margin-bottom: 16px;">Ready to Build Your Workforce?</div>
+    <p class="section-desc" style="margin-bottom: 32px;">No API keys needed to start. Install, launch, create your first agent.</p>
+    <button class="cta-btn cta-primary" onclick="enterApp()" style="font-size: 16px; padding: 16px 48px;">
+      Launch Kami Claw
+    </button>
+  </section>
+
+  <footer class="footer">
+    <div class="footer-logo">KAMI CLAW</div>
+    <div class="footer-text">AI WORKFORCE PLATFORM</div>
+    <div class="footer-links">
+      <a href="#">GitHub</a>
+      <a href="#">Docs</a>
+      <a href="#">Discord</a>
+    </div>
+  </footer>
+
+  <script>
+    // Particles background
+    const pc = document.getElementById('particles');
+    const pctx = pc.getContext('2d');
+    let particles = [];
+
+    function resizeParticles() {
+      pc.width = window.innerWidth;
+      pc.height = window.innerHeight;
+    }
+    resizeParticles();
+    window.addEventListener('resize', resizeParticles);
+
+    for (let i = 0; i < 60; i++) {
+      particles.push({
+        x: Math.random() * window.innerWidth,
+        y: Math.random() * window.innerHeight,
+        vx: (Math.random() - 0.5) * 0.3,
+        vy: (Math.random() - 0.5) * 0.3,
+        r: Math.random() * 1.5 + 0.5,
+        o: Math.random() * 0.3 + 0.05,
+        color: ['#8b5cf6', '#ec4899', '#3b82f6', '#10b981'][Math.floor(Math.random() * 4)]
+      });
+    }
+
+    function drawParticles() {
+      pctx.clearRect(0, 0, pc.width, pc.height);
+      particles.forEach(p => {
+        p.x += p.vx;
+        p.y += p.vy;
+        if (p.x < 0) p.x = pc.width;
+        if (p.x > pc.width) p.x = 0;
+        if (p.y < 0) p.y = pc.height;
+        if (p.y > pc.height) p.y = 0;
+        pctx.beginPath();
+        pctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+        pctx.fillStyle = p.color;
+        pctx.globalAlpha = p.o;
+        pctx.fill();
+      });
+      // Draw connections
+      pctx.globalAlpha = 0.03;
+      pctx.strokeStyle = '#8b5cf6';
+      particles.forEach((a, i) => {
+        particles.slice(i + 1).forEach(b => {
+          const d = Math.hypot(a.x - b.x, a.y - b.y);
+          if (d < 120) {
+            pctx.beginPath();
+            pctx.moveTo(a.x, a.y);
+            pctx.lineTo(b.x, b.y);
+            pctx.stroke();
+          }
+        });
+      });
+      pctx.globalAlpha = 1;
+      requestAnimationFrame(drawParticles);
+    }
+    drawParticles();
+
+    // Nav show on scroll
+    const nav = document.getElementById('nav');
+    window.addEventListener('scroll', () => {
+      nav.classList.toggle('visible', window.scrollY > 200);
+    });
+
+    // Scroll animations
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          e.target.style.animation = 'slideUp 0.6s ease forwards';
+          e.target.style.opacity = '1';
+        }
+      });
+    }, { threshold: 0.1 });
+
+    document.querySelectorAll('.what-card, .model-card, .feature-item').forEach(el => {
+      el.style.opacity = '0';
+      observer.observe(el);
+    });
+
+    // Enter app
+    function enterApp() {
+      try {
+        const { ipcRenderer } = require('electron');
+        ipcRenderer.send('enter-app');
+      } catch (e) {
+        // Fallback: direct navigation
+        window.location.href = 'index.html';
+      }
+    }
+  </script>
+</body>
+</html>
